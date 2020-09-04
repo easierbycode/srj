@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "rimraf docs && parcel build src/index.html --out-dir docs --public-url /eva/",
     "dev": "rimraf www && parcel src/index.html --out-dir www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +14,7 @@
     "phaser": "^3.24.1"
   },
   "devDependencies": {
+    "cssnano": "^4.1.10",
     "typescript": "^4.0.2"
   }
 }
