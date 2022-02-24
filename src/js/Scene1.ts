@@ -77,8 +77,13 @@ export class Scene1 extends Phaser.Scene {
                 blendMode: 'SCREEN'
             });
         }
-        // this.add.text(config.width / 2, config.height / 2, 'Happy Birthday EVA! ', {
-        this.add.text(400, 450, 'Happy Birthday EVA! ', {
+
+        let babyBear = this.add.text( 400, 415, '👸🏼', {
+            fontSize: '36px'
+        }).setOrigin( 0.5 );
+
+        // this.add.text(config.width / 2, config.height / 2, 'Happy Birthday SRJ! ', {
+        this.add.text(400, 450, 'Happy Birthday SRJ! ', {
             fontFamily: 'Bangers',
             fontSize: '48px'
         }).setOrigin( 0.5 );
@@ -107,9 +112,41 @@ export class Scene1 extends Phaser.Scene {
             repeat: -1,
             yoyo: true
         });
-        let gift = this.add.sprite( 325, 600, 'gift' );
+        this.anims.create({
+            key: 'jumping',
+            frames: [
+                { key: 'gift', frame: 3 },
+                { key: 'gift', frame: 4 },
+                { key: 'gift', frame: 5 },
+                { key: 'gift', frame: 6 }
+            ],
+            frameRate: 6,
+            repeat: -1,
+            yoyo: true
+        });
+        let gift = this.physics.add.sprite( 325, 600, 'gift' );
         gift.setOrigin( 1, 1 );
         gift.play( 'bounce' );
+
+        
+        this.time.addEvent({
+            callback: () => {
+                gift
+                    .play( 'jumping' )
+                    .setCollideWorldBounds( true );
+
+                this.tweens.add({
+                    targets: [gift, gift2],
+                    y: -1,
+                    yoyo: true,
+                    onComplete: () => {
+                        gift.play( 'bounce' );
+                    }
+                })
+            },
+            delay: 1500
+        })
+
         let gift2 = this.add.sprite( 475, 600, 'gift' );
         gift2.setOrigin( 0, 1 );
         gift2.play( 'bounce' );
@@ -133,5 +170,41 @@ export class Scene1 extends Phaser.Scene {
         cake.setScale( 0.5 );
         cake.setOrigin( 0.5, 0 );
         cake.play( 'cake-anim' );
+
+        this.updatingText = false;
+
+        this.complimentIdx = 0;
+
+        this.compliments = [
+            'I LOVE YOU BABY BEAR!! ',
+            "LET'S GO SKATING SOON! ",
+            `BEST DAUGHTER¹ EVER!!! `,
+            `💙 MY LITTLE PRINCESS! `
+        ];
+
+        this.subtext = this.add.text( 400, 425, '', {
+            fontFamily: 'Bangers',
+            fontSize: '24px'
+        }).setOrigin( 0.5 );
+    }
+
+    update() {
+        if ( this.updatingText )  return;
+        if (this.input.activePointer.isDown) {
+            this.updatingText = true;
+
+            this.subtext.text = this.compliments[ this.complimentIdx ];
+
+            if (this.complimentIdx == this.compliments.length-1) {
+                this.complimentIdx = 0;
+            } else {
+                this.complimentIdx++;
+            }
+
+            this.time.addEvent({
+                callback: () => { this.updatingText = false },
+                delay: 100
+            });
+        }
     }
 }
