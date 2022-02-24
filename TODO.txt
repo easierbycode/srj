@@ -1,0 +1,14 @@
+NOW
+===
+- babyBear emoji fades out, Sawyerita fades in on the left
+  - tween babyBear alpha to 0 over 3 seconds
+
+
+LATER
+=====
+- train, w/ 1 letter on each car comes in from the right
+- Sawyerita shoots each car and it explodes (shoot princess crown), 
+  letter flies to left, and they stack against each other spelling out Sawyerita
+- after cake explodes, there is a red button (press me?)
+- on touch updates/shows compliment
+  - first touch is triggered by Sawyerita shooting the button
